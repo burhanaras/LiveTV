@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
+import com.burhan.livetv.player.BurhansLiveTvPlayer;
 
 public class MainActivity extends AppCompatActivity implements EasyVideoCallback {
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements EasyVideoCallback
     private static final String TEST_URL = "http://yayin7.canlitvlive.io/startv/live.m3u8?tkn=3ssO2t0cI94_OAWNIGdYLw&tms=1502322811";
     private static final String TAG = MainActivity.class.getName();
 
-    private BurhansTvPlayer player;
+    private BurhansLiveTvPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements EasyVideoCallback
         setContentView(R.layout.activity_main);
 
         // Grabs a reference to the player view
-        player = (BurhansTvPlayer) findViewById(R.id.player);
+        player = (BurhansLiveTvPlayer) findViewById(R.id.player);
         player.setCallback(this);
         player.setAutoPlay(true);
         // Sets the source to the HTTP URL held in the TEST_URL variable.
