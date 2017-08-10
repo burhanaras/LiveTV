@@ -1,4 +1,4 @@
-package com.burhan.livetv.player;
+package com.burhan.livetv.ui.player;
 
 import android.content.Context;
 import android.util.AttributeSet;

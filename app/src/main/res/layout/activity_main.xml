@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.burhan.livetv.MainActivity">
+    tools:context="com.burhan.livetv.ui.main.MainActivity">
 
 
-
-    <com.burhan.livetv.player.BurhansLiveTvPlayer
+    <com.burhan.livetv.ui.player.BurhansLiveTvPlayer
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.burhan.livetv.player.BurhansLiveTvPlayer>
+    </com.burhan.livetv.ui.player.BurhansLiveTvPlayer>
 
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_channels"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+
+</RelativeLayout>
