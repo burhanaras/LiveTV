@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 
 import com.burhan.livetv.R;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private MainPresenter presenter;
     private RecyclerView rvChannels;
     private ChannelsAdapter adapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         rvChannels = (RecyclerView) findViewById(R.id.rv_channels);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvChannels.setLayoutManager(horizontalLayoutManager);
-         adapter = new ChannelsAdapter(new ArrayList<Channel>(), this);
+        adapter = new ChannelsAdapter(new ArrayList<Channel>(), this);
         rvChannels.setAdapter(adapter);
 
+        progressBar = new ProgressBar(this);
 
         presenter = new MainPresenterImpl(this);
         presenter.loadChannels();
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onStartProgress() {
         Log.d(TAG, "onStartProgress() called");
+        if(progressBar!= null ) progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -88,5 +93,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onHideLoading() {
         Log.d(TAG, "onHideLoading() called");
+        if(progressBar!= null) progressBar.setVisibility(View.GONE);
     }
 }
