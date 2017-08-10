@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/iv_channel"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_width="@dimen/channel_item_width"
+        android:layout_height="@dimen/channel_item_width" />
 </LinearLayout>

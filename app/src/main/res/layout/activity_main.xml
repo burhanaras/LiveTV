@@ -19,7 +19,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_channels"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:background="#66000000"/>
 
 
 </RelativeLayout>
