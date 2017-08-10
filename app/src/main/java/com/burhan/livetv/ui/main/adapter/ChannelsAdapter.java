@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
+import com.burhan.livetv.ui.main.mvp.MainView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +18,20 @@ import java.util.List;
 
 public class ChannelsAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
     private ArrayList<Channel> items;
+    private MainView mainView;
 
-    public ChannelsAdapter(ArrayList<Channel> channels) {
+    public ChannelsAdapter(ArrayList<Channel> channels, MainView mainView) {
 
         items = channels;
+        this.mainView = mainView;
     }
 
     @Override
     public ChannelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_channel, parent,false);
-        return new ChannelViewHolder(view);
+        ChannelViewHolder viewHolder =  new ChannelViewHolder(view);
+        viewHolder.setView(mainView);
+        return viewHolder;
     }
 
     @Override

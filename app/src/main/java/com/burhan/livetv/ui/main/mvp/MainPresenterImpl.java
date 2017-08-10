@@ -34,7 +34,7 @@ public class MainPresenterImpl implements MainPresenter {
             channel = new Channel();
             channel.setName("Show TV");
             channel.setLogo("http://www.sermermedya.com/wp-content/uploads/2016/02/show-tv-logo-png.png");
-            channel.setUrl("http://yayin7.canlitvlive.io/showtv/live.m3u8?tkn=4467iUawN5vvAK5ZAW2kjQ&tms=1502398087");
+            channel.setUrl("http://yayin7.canlitvlive.io/showtv/live.m3u8?tkn=j5iACthxm3pbWr7JDq3uSg&tms=1502413491");
             response.add(channel);
 
         }

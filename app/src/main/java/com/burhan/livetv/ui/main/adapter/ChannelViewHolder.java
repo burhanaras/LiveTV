@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
+import com.burhan.livetv.ui.main.mvp.MainView;
 
 /**
  * Created by Burhan on 10/08/2017.
@@ -17,6 +18,16 @@ class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
     private static final String TAG = ChannelViewHolder.class.getName();
     private ImageView ivChannel;
+    private MainView view;
+    private Channel channel;
+
+    public MainView getView() {
+        return view;
+    }
+
+    public void setView(MainView view) {
+        this.view = view;
+    }
 
     public ChannelViewHolder(View itemView) {
         super(itemView);
@@ -25,6 +36,7 @@ class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
     }
 
     public void bind(Channel channel) {
+        this.channel = channel;
         if (channel == null) return;
         Glide.with(ivChannel.getContext()).load(channel.getLogo()).into(ivChannel);
     }
@@ -32,5 +44,8 @@ class ChannelViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
     @Override
     public void onClick(View v) {
         Log.d(TAG, "onClick() called with: v = [" + getAdapterPosition() + "]");
+        if(this.channel!= null && getView()!= null){
+            getView().onChannelSelected(channel);
+        }
     }
 }

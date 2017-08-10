@@ -40,12 +40,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         // Grabs a reference to the player view
         player = (BurhansLiveTvPlayer) findViewById(R.id.player);
+        player.setCallback(new BurhansLiveTvCallBack());
         player.setAutoPlay(true);
         // To play files, you can use Uri.fromFile(new File("..."))
         rvChannels = (RecyclerView) findViewById(R.id.rv_channels);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvChannels.setLayoutManager(horizontalLayoutManager);
-         adapter = new ChannelsAdapter(new ArrayList<Channel>());
+         adapter = new ChannelsAdapter(new ArrayList<Channel>(), this);
         rvChannels.setAdapter(adapter);
 
 
@@ -70,8 +71,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onChannelsLoaded(List<Channel> channels) {
         Log.d(TAG, "onChannelsLoaded() called with: channels = [" + channels.size() + "] channels");
         if (channels != null && channels.size() > 0) {
+            Log.d(TAG, "player setSource: "+channels.get(0).getUrl());
             player.setSource(Uri.parse(channels.get(0).getUrl()));
             adapter.setData(channels);
+        }
+    }
+
+    @Override
+    public void onChannelSelected(Channel channel) {
+        Log.d(TAG, "onChannelSelected() called with: channel = [" + channel + "]");
+        if(channel != null){
+            player.setSource(Uri.parse(channel.getUrl()));
         }
     }
 
