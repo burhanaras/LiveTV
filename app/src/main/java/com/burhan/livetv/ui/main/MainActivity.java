@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onChannelsLoaded(List<Channel> channels) {
         Log.d(TAG, "onChannelsLoaded() called with: channels = [" + channels.size() + "] channels");
-        if (channels != null && channels.size() > 0) {
+        if (channels != null && channels.size() > 0 && channels.get(0).getUrl() != null) {
             Log.d(TAG, "player setSource: " + channels.get(0).getUrl());
             player.setSource(Uri.parse(channels.get(0).getUrl()));
             adapter.setData(channels);

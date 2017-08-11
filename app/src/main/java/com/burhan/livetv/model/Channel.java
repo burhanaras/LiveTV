@@ -1,10 +1,13 @@
 package com.burhan.livetv.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Burhan on 10/08/2017.
  */
 
 public class Channel {
+    @SerializedName("name")
     private String name;
     private String logo;
     private String url;

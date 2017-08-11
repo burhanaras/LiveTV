@@ -1,10 +1,17 @@
 package com.burhan.livetv.ui.main.mvp;
 
 
+import android.util.Log;
+
+import com.burhan.livetv.data.ChannelsService;
 import com.burhan.livetv.model.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Burhan on 10/08/2017.
@@ -12,6 +19,7 @@ import java.util.List;
 
 public class MainPresenterImpl implements MainPresenter {
 
+    private static final String TAG = MainPresenterImpl.class.getName();
     private MainView view;
 
     public MainView getView() {
@@ -27,21 +35,23 @@ public class MainPresenterImpl implements MainPresenter {
 
         getView().onStartProgress();
 
-        Channel channel = new Channel();
-        List<Channel> response = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        ChannelsService channelsService =  ChannelsService.retrofit.create(ChannelsService.class);
+        Call<List<Channel>> call =  channelsService.retrieveAllChannels();
+        call.enqueue(new Callback<List<Channel>>() {
+            @Override
+            public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
+                Log.d(TAG, "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                Log.d(TAG, "onResponse: "+response.body());
+                getView().onHideLoading();
+                getView().onChannelsLoaded(response.body());
+            }
 
-            channel = new Channel();
-            channel.setName("Star TV");
-            channel.setLogo("http://www.sermermedya.com/wp-content/uploads/2016/02/show-tv-logo-png.png");
-            channel.setUrl("http://yayin7.canlitvlive.io/startv/live.m3u8?tkn=FXhNlCxjSKfyLR63c1XW0w&tms=1502495497");
-            response.add(channel);
+            @Override
+            public void onFailure(Call<List<Channel>> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                getView().onHideLoading();
+            }
+        });
 
-        }
-
-
-        getView().onChannelsLoaded(response);
-
-        getView().onHideLoading();
     }
 }
