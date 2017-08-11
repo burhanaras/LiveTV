@@ -32,9 +32,9 @@ public class MainPresenterImpl implements MainPresenter {
         for (int i = 0; i < 20; i++) {
 
             channel = new Channel();
-            channel.setName("Show TV");
+            channel.setName("Star TV");
             channel.setLogo("http://www.sermermedya.com/wp-content/uploads/2016/02/show-tv-logo-png.png");
-            channel.setUrl("http://yayin7.canlitvlive.io/showtv/live.m3u8?tkn=j5iACthxm3pbWr7JDq3uSg&tms=1502413491");
+            channel.setUrl("http://yayin7.canlitvlive.io/startv/live.m3u8?tkn=FXhNlCxjSKfyLR63c1XW0w&tms=1502495497");
             response.add(channel);
 
         }

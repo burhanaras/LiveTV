@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onStartProgress() {
         Log.d(TAG, "onStartProgress() called");
-        if(progressBar!= null ) progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onChannelsLoaded(List<Channel> channels) {
         Log.d(TAG, "onChannelsLoaded() called with: channels = [" + channels.size() + "] channels");
         if (channels != null && channels.size() > 0) {
-            Log.d(TAG, "player setSource: "+channels.get(0).getUrl());
+            Log.d(TAG, "player setSource: " + channels.get(0).getUrl());
             player.setSource(Uri.parse(channels.get(0).getUrl()));
             adapter.setData(channels);
         }
@@ -85,14 +85,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onChannelSelected(Channel channel) {
         Log.d(TAG, "onChannelSelected() called with: channel = [" + channel + "]");
-        if(channel != null){
+        if (channel != null) {
             player.setSource(Uri.parse(channel.getUrl()));
+            adapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onHideLoading() {
         Log.d(TAG, "onHideLoading() called");
-        if(progressBar!= null) progressBar.setVisibility(View.GONE);
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
     }
 }
