@@ -7,18 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AdminActivity extends AppCompatActivity implements LiveChannelsCrawler.CrawlerListener {
 
     private static final String TAG = AdminActivity.class.getName();
+    @BindView(R.id.tv_logs)
+    TextView tvLogs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,6 +38,8 @@ public class AdminActivity extends AppCompatActivity implements LiveChannelsCraw
                 startCrawling();
             }
         });
+        tvLogs.setText("Click the FAB to get started.");
+
     }
 
     private void startCrawling() {
@@ -42,15 +51,18 @@ public class AdminActivity extends AppCompatActivity implements LiveChannelsCraw
     @Override
     public void onCrawlingStarted() {
         Log.d(TAG, "onCrawlingStarted() called");
+        tvLogs.append("\n-> onCrawlingStarted() called");
     }
 
     @Override
     public void onCrawlingProgress(Channel channel) {
         Log.d(TAG, "onCrawlingProgress() called with: channel = [" + channel + "]");
+        tvLogs.append("\n-> "+ channel.toString());
     }
 
     @Override
     public void onCrawlingFinished() {
         Log.d(TAG, "onCrawlingFinished() called");
+        tvLogs.append("\n-> onCrawlingFinished() called");
     }
 }

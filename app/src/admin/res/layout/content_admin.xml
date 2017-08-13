@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,4 +8,10 @@
     tools:context="com.burhan.livetv.AdminActivity"
     tools:showIn="@layout/activity_admin">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_logs"
+        android:layout_width="395dp"
+        android:layout_height="587dp"
+        android:inputType="textMultiLine"
+        android:padding="10dp" />
+</LinearLayout>

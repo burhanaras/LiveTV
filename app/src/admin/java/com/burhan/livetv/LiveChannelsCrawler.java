@@ -1,5 +1,7 @@
 package com.burhan.livetv;
 
+import android.os.Handler;
+
 import com.burhan.livetv.model.Channel;
 
 /**
@@ -24,6 +26,16 @@ class LiveChannelsCrawler {
     }
 
     public void start() {
+        if(listener != null){
+            listener.onCrawlingStarted();
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onCrawlingProgress(new Channel());
+                    listener.onCrawlingFinished();
+                }
+            }, 2000);
+        }
     }
 }
