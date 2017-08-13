@@ -6,7 +6,6 @@ import android.util.Log;
 import com.burhan.livetv.data.ChannelsService;
 import com.burhan.livetv.model.Channel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
