@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -59,12 +61,17 @@ public class AdminActivity extends AppCompatActivity implements LiveChannelsCraw
     @Override
     public void onCrawlingProgress(Channel channel) {
         Log.d(TAG, "onCrawlingProgress() called with: channel = [" + channel + "]");
-        tvLogs.append("\n-> "+ channel.toString());
+        tvLogs.append("\n-> " + channel.toString());
     }
 
     @Override
     public void onCrawlingFinished(List<Channel> channels) {
         Log.d(TAG, "onCrawlingFinished() called");
-        tvLogs.append("\n-> onCrawlingFinished("+channels.size()+" channels ) called");
+        tvLogs.append("\n-> onCrawlingFinished(" + channels.size() + " channels ) called");
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference channelsRef = database.getReference("channels");
+        channelsRef.setValue(channels);
+
     }
 }
