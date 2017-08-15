@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -61,8 +63,8 @@ public class AdminActivity extends AppCompatActivity implements LiveChannelsCraw
     }
 
     @Override
-    public void onCrawlingFinished() {
+    public void onCrawlingFinished(List<Channel> channels) {
         Log.d(TAG, "onCrawlingFinished() called");
-        tvLogs.append("\n-> onCrawlingFinished() called");
+        tvLogs.append("\n-> onCrawlingFinished("+channels.size()+" channels ) called");
     }
 }

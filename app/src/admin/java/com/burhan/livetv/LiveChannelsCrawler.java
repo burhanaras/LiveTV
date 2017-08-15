@@ -1,20 +1,35 @@
 package com.burhan.livetv;
 
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.burhan.livetv.model.Channel;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Burhan on 14/08/2017.
  */
 
 class LiveChannelsCrawler {
+    private static final String TAG = LiveChannelsCrawler.class.getName();
     private CrawlerListener listener;
 
     public interface CrawlerListener {
         void onCrawlingStarted();
+
         void onCrawlingProgress(Channel channel);
-        void onCrawlingFinished();
+
+        void onCrawlingFinished(List<Channel> channels);
     }
 
     public void setListener(CrawlerListener listener) {
@@ -26,16 +41,82 @@ class LiveChannelsCrawler {
     }
 
     public void start() {
-        if(listener != null){
+        if (listener != null) {
             listener.onCrawlingStarted();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onCrawlingProgress(new Channel());
-                    listener.onCrawlingFinished();
-                }
-            }, 2000);
+            new HTMLCrawlerTask().execute();
         }
+    }
+
+    class HTMLCrawlerTask extends AsyncTask<Void, Void, String> {
+
+        private String[] names = {"TRT 1"};
+        private String[] images = {"http://www.hdcanlitvizler.com/wp-content/uploads/2016/10/trt-1-logo-png-300x214.png"};
+        private String[] urls = {"http://www.canlitv.com/trt-1"};
+
+        private List<Channel> channels = new ArrayList<>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            try {
+                for (int i = 0; i < names.length; i++) {
+                    Channel channel = new Channel();
+                    channel.setName(names[i]);
+                    channel.setLogo(images[i]);
+                    channel.setUrl(fetch(urls[i]));
+                    channels.add(channel);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String url) {
+            super.onPostExecute(url);
+            Log.d(TAG, "onPostExecute: " + url);
+            for (Channel channel : channels) {
+                listener.onCrawlingProgress(channel);
+            }
+            listener.onCrawlingFinished(channels);
+
+        }
+
+        @Nullable
+        private String fetch(String url) throws IOException {
+            // Build and set timeout values for the request.
+            URLConnection connection = (new URL(url)).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+
+            // Read and store the result line by line then return the entire string.
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder sb = new StringBuilder();
+            for (String line; (line = reader.readLine()) != null; ) {
+                sb.append(line);
+            }
+            in.close();
+
+            String html = sb.toString();
+            int indexM3U8 = html.indexOf("m3u8");
+            if (indexM3U8 == -1) return null;
+            int start = html.substring(0, indexM3U8).lastIndexOf("\"") + 1;
+            int end = html.substring(indexM3U8).indexOf("\"");
+            end = indexM3U8 + end;
+            Log.d(TAG, "doInBackground: " + start + " - " + end);
+            return html.substring(start, end);
+        }
+
+
     }
 }
