@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
+import com.google.firebase.crash.FirebaseCrash;
 
 /**
  * Created by Burhan on 11/08/2017.
@@ -41,6 +42,7 @@ class BurhansLiveTvCallBack implements EasyVideoCallback {
     @Override
     public void onError(EasyVideoPlayer player, Exception e) {
         Log.d(TAG, "onError: ");
+        FirebaseCrash.log(e.getMessage());
     }
 
     @Override

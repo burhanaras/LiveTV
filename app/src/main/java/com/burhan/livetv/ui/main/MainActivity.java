@@ -22,6 +22,7 @@ import com.burhan.livetv.ui.main.mvp.MainView;
 import com.burhan.livetv.ui.player.BurhansLiveTvPlayer;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Burhans
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "onCancelled: ");
+                FirebaseCrash.log("Data coulnt read from Firebase realtimeDB.");
             }
         });
 

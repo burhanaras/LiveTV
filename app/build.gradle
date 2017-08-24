@@ -48,9 +48,13 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.firebase:firebase-ads:10.0.1'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
+
+
 
 
 
