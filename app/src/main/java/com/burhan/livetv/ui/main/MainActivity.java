@@ -20,6 +20,8 @@ import com.burhan.livetv.ui.main.mvp.MainPresenter;
 import com.burhan.livetv.ui.main.mvp.MainPresenterImpl;
 import com.burhan.livetv.ui.main.mvp.MainView;
 import com.burhan.livetv.ui.player.BurhansLiveTvPlayer;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Burhans
     private RecyclerView rvChannels;
     private ChannelsAdapter adapter;
     private ProgressBar progressBar;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Burhans
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Grabs a reference to the player view
         player = (BurhansLiveTvPlayer) findViewById(R.id.player);

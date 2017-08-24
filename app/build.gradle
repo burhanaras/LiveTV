@@ -46,10 +46,12 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.firebase:firebase-ads:10.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.google.code.gson:gson:2.7'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'
