@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
+import com.burhan.livetv.model.ChannelList;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -55,23 +57,26 @@ public class AdminActivity extends AppCompatActivity implements LiveChannelsCraw
     @Override
     public void onCrawlingStarted() {
         Log.d(TAG, "onCrawlingStarted() called");
-        tvLogs.append("\n-> onCrawlingStarted() called");
+        tvLogs.setText("\n-> onCrawlingStarted() called");
     }
 
     @Override
     public void onCrawlingProgress(Channel channel) {
         Log.d(TAG, "onCrawlingProgress() called with: channel = [" + channel + "]");
-        tvLogs.append("\n-> " + channel.toString());
+        tvLogs.setText(tvLogs.getText() + "\n-> " + channel.toString());
     }
 
     @Override
     public void onCrawlingFinished(List<Channel> channels) {
         Log.d(TAG, "onCrawlingFinished() called");
-        tvLogs.append("\n-> onCrawlingFinished(" + channels.size() + " channels ) called");
+        tvLogs.setText(tvLogs.getText() + "\n-> onCrawlingFinished(" + channels.size() + " channels ) called");
+        ChannelList channelList = new ChannelList();
+        channelList.setChannels(channels);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference channelsRef = database.getReference("channels");
-        channelsRef.setValue(channels);
+        DatabaseReference channelsRef = database.getReference("channeldata");
+        channelsRef.setValue(channelList);
+        Log.d(TAG, "onCrawlingFinished: Firebase real time db has been updated.");
 
     }
 }

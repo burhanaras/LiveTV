@@ -14,16 +14,23 @@ import android.widget.ProgressBar;
 
 import com.burhan.livetv.R;
 import com.burhan.livetv.model.Channel;
+import com.burhan.livetv.model.ChannelList;
 import com.burhan.livetv.ui.main.adapter.ChannelsAdapter;
 import com.burhan.livetv.ui.main.mvp.MainPresenter;
 import com.burhan.livetv.ui.main.mvp.MainPresenterImpl;
 import com.burhan.livetv.ui.main.mvp.MainView;
 import com.burhan.livetv.ui.player.BurhansLiveTvPlayer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, BurhansLiveTvPlayer.PlayerClickCallBack {
     private static final String TAG = MainActivity.class.getName();
 
     private BurhansLiveTvPlayer player;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         player = (BurhansLiveTvPlayer) findViewById(R.id.player);
         player.setCallback(new BurhansLiveTvCallBack());
         player.setAutoPlay(true);
+        player.setPlayerClickCallBack(this);
         // To play files, you can use Uri.fromFile(new File("..."))
         rvChannels = (RecyclerView) findViewById(R.id.rv_channels);
         RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -55,7 +63,28 @@ public class MainActivity extends AppCompatActivity implements MainView {
         progressBar = new ProgressBar(this);
 
         presenter = new MainPresenterImpl(this);
-        presenter.loadChannels();
+        //presenter.loadChannels();
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference channelsRef = database.getReference("channeldata");
+        channelsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Log.d(TAG, "onDataChange: ");
+                ChannelList channelList = dataSnapshot.getValue(ChannelList.class);
+                onChannelsLoaded(channelList.getChannels());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: ");
+            }
+        });
+
 
     }
 
@@ -85,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void onChannelSelected(Channel channel) {
         Log.d(TAG, "onChannelSelected() called with: channel = [" + channel + "]");
-        if (channel != null) {
+        if (channel != null && channel.getUrl() != null) {
             player.setSource(Uri.parse(channel.getUrl()));
             adapter.notifyDataSetChanged();
         }
@@ -95,5 +124,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onHideLoading() {
         Log.d(TAG, "onHideLoading() called");
         if (progressBar != null) progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPlayerClicked(boolean isControlsShown) {
+        Log.d(TAG, "onPlayerClicked() called");
+        rvChannels.setVisibility( isControlsShown ? View.VISIBLE: View.GONE);
+
     }
 }

@@ -49,9 +49,26 @@ class LiveChannelsCrawler {
 
     class HTMLCrawlerTask extends AsyncTask<Void, Void, String> {
 
-        private String[] names = {"TRT 1"};
-        private String[] images = {"http://www.hdcanlitvizler.com/wp-content/uploads/2016/10/trt-1-logo-png-300x214.png"};
-        private String[] urls = {"http://www.canlitv.com/trt-1"};
+        private String[] names = {"TRT 1", "ATV", "SHOW TV", "STAR TV", "TV 8", "FOX TV", "Kanal 7", "CNN Turk", "A Haber"};
+        private String[] images = {"http://www.hdcanlitvizler.com/wp-content/uploads/2016/10/trt-1-logo-png-300x214.png",
+                "http://www.globya.com.tr/wp-content/uploads/2016/03/clients-06.png",
+                "http://www.sermermedya.com/wp-content/uploads/2016/02/show-tv-logo-png.png",
+                "http://www.turkcespiker.com/files/imagecache/full_gorunum/dosya_resimler/Denizlili2O/Star_TV_logosu.png",
+                "https://img.webme.com/pic/c/canlitvlerizlee/tV8.png",
+                "http://www.boliviaenmovimiento.net/wp-content/uploads/2017/07/Glamorous-Fox-Tv-Logo-Png-75-About-Remodel-Logos-with-Fox-Tv-Logo-Png.jpg",
+                "http://1.bp.blogspot.com/-KJ7KNCWfeq4/UDjAp3PbMxI/AAAAAAAACNc/v5QEhB0TNDU/s1600/Kanal7.png",
+                "http://www.canlitvizleyin.com/kanallar/cnn-turk.png",
+                "http://i.ahaber.com.tr/site/v2/i/ahaber-facebook-logo.png"
+        };
+        private String[] urls = {"http://www.canlitv.com/trt-1",
+                "http://www.canlitv.com/canli-atv",
+                "http://www.canlitv.com/show-tv",
+                "http://www.startv.com.tr/canli-yayin",
+                "http://www.canlitv.com/tv-8",
+                "http://www.canlitv.com/fox-tv",
+                "http://www.canlitv.com/kanal-7",
+                "https://www.cnnturk.com/canli-yayin",
+                "http://www.canlitv.com/canli-a-haber"};
 
         private List<Channel> channels = new ArrayList<>();
 
@@ -69,7 +86,10 @@ class LiveChannelsCrawler {
                     channel.setName(names[i]);
                     channel.setLogo(images[i]);
                     channel.setUrl(fetch(urls[i]));
-                    channels.add(channel);
+                    if (channel.getUrl() != null) {
+                        channels.add(channel);
+                    }
+
                 }
 
             } catch (IOException e) {
@@ -113,7 +133,6 @@ class LiveChannelsCrawler {
             int start = html.substring(0, indexM3U8).lastIndexOf("\"") + 1;
             int end = html.substring(indexM3U8).indexOf("\"");
             end = indexM3U8 + end;
-            Log.d(TAG, "doInBackground: " + start + " - " + end);
             return html.substring(start, end);
         }
 
