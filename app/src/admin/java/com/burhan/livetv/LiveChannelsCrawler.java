@@ -30,6 +30,8 @@ class LiveChannelsCrawler {
         void onCrawlingProgress(Channel channel);
 
         void onCrawlingFinished(List<Channel> channels);
+
+        void onCrawlingFailed(List<Channel> channels);
     }
 
     public void setListener(CrawlerListener listener) {
@@ -49,7 +51,8 @@ class LiveChannelsCrawler {
 
     class HTMLCrawlerTask extends AsyncTask<Void, Void, String> {
 
-        private String[] names = {"TRT 1", "ATV", "SHOW TV", "STAR TV", "TV 8", "FOX TV", "Kanal 7", "CNN Turk", "A Haber"};
+        private String[] names = {"TRT 1", "ATV", "SHOW TV", "STAR TV", "TV 8", "FOX TV", "Kanal 7", "CNN Turk", "A Haber",
+        "Kanal D","NTV","A2","NTV Spor","Haber Türk","Kanal 24","TRT 3","Flash TV","TeVe2","TvNet","360","TRT Haber","TGRT"};
         private String[] images = {"http://www.hdcanlitvizler.com/wp-content/uploads/2016/10/trt-1-logo-png-300x214.png",
                 "http://www.globya.com.tr/wp-content/uploads/2016/03/clients-06.png",
                 "http://www.sermermedya.com/wp-content/uploads/2016/02/show-tv-logo-png.png",
@@ -58,19 +61,46 @@ class LiveChannelsCrawler {
                 "http://www.boliviaenmovimiento.net/wp-content/uploads/2017/07/Glamorous-Fox-Tv-Logo-Png-75-About-Remodel-Logos-with-Fox-Tv-Logo-Png.jpg",
                 "http://1.bp.blogspot.com/-KJ7KNCWfeq4/UDjAp3PbMxI/AAAAAAAACNc/v5QEhB0TNDU/s1600/Kanal7.png",
                 "http://www.canlitvizleyin.com/kanallar/cnn-turk.png",
-                "http://i.ahaber.com.tr/site/v2/i/ahaber-facebook-logo.png"
+                "http://i.ahaber.com.tr/site/v2/i/ahaber-facebook-logo.png",
+                "https://s.kanald.com.tr/ps/kanald_proxy/assets/img/kanal-d.png",
+                "http://canlitvx.com/wp-content/uploads/NTV-Canli-Yayin-izle-150x120.png",
+                "https://3.bp.blogspot.com/-YYuNOv5qv30/WNp6G000BoI/AAAAAAAAATE/TJwHXr38JGI-8aqYzle23UM0Lu4dVPC8ACLcB/s320/a2-tv.png",
+                "http://www.ecanlitvizle.net/logo/ntv-spor-hd-izle.png",
+                "http://canlitvx.com/wp-content/uploads/haberturk-compressor.png",
+                "https://www.turkcebilgi.com/uploads/baslik/thumb/2332638.png",
+                "http://3.bp.blogspot.com/--Bqck2C_elU/Ubw_PmpmoOI/AAAAAAAASDQ/nu5jXYTwWFU/s320/trtspor-logo.png",
+                "http://mobiletv.mobibase.com/html/logo/hd/channel_ld_627.png",
+                "https://www.kablonet.net/upload/dosyalar/136.jpg",
+                "http://azonceoldu.com/resimler/images/tvnet.jpg",
+                "https://upload.wikimedia.org/wikipedia/commons/c/c3/360_tv.png",
+                "http://www.wowmedyatv.com/wp-content/uploads/2016/02/trthaber-350x327.png",
+                "http://a5.mzstatic.com/us/r30/Purple4/v4/1a/37/5f/1a375f08-578c-1775-31a4-a3547ecbb2da/icon175x175.png"
         };
         private String[] urls = {"http://www.canlitv.com/trt-1",
                 "http://www.canlitv.com/canli-atv",
                 "http://www.canlitv.com/show-tv",
-                "http://www.startv.com.tr/canli-yayin",
+                "http://www.canlitvlive.io/izle/star-tv-izle.html",
                 "http://www.canlitv.com/tv-8",
                 "http://www.canlitv.com/fox-tv",
                 "http://www.canlitv.com/kanal-7",
-                "https://www.cnnturk.com/canli-yayin",
-                "http://www.canlitv.com/canli-a-haber"};
+                "http://www.canlitvlive.io/izle/cnn-turk.html",
+                "http://www.canlitv.com/canli-a-haber",
+        "http://www.canlitvlive.io/izle/kanal-d-hd-izle.html",
+        "http://www.canlitvlive.io/izle/ntv-izle.html",
+        "http://www.canlitvlive.io/izle/a2-tv.html",
+        "http://www.canlitvlive.io/izle/ntv-spor-izle.html",
+        "http://www.canlitvlive.io/izle/haber-turk-canli-yayin.html",
+        "http://www.canlitvlive.io/izle/kanal-24.html",
+        "http://www.canlitvlive.io/izle/trt-3-spor.html",
+        "http://www.canlitvlive.io/izle/flash-tv.html",
+        "http://www.canlitvlive.io/izle/teve2.html",
+        "http://www.canlitvlive.io/izle/tv-net.html",
+        "http://www.canlitvlive.io/izle/sky-turk.html",
+        "http://www.canlitvlive.io/izle/trt-haber.html",
+        "http://www.canlitvlive.io/izle/tgrt-haber.html"};
 
         private List<Channel> channels = new ArrayList<>();
+        private List<Channel> failedChannels = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -88,6 +118,8 @@ class LiveChannelsCrawler {
                     channel.setUrl(fetch(urls[i]));
                     if (channel.getUrl() != null) {
                         channels.add(channel);
+                    } else {
+                        failedChannels.add(channel);
                     }
 
                 }
@@ -107,6 +139,7 @@ class LiveChannelsCrawler {
                 listener.onCrawlingProgress(channel);
             }
             listener.onCrawlingFinished(channels);
+            listener.onCrawlingFailed(failedChannels);
 
         }
 

@@ -12,7 +12,9 @@
         android:id="@+id/tv_logs"
         android:layout_width="395dp"
         android:layout_height="587dp"
-        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:textSize="14sp"
+        android:typeface="normal"
         android:padding="10dp" />
 
 </LinearLayout>
